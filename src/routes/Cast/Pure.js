@@ -80,9 +80,9 @@ class Pure extends React.Component {
             <p>{details.biography}</p>
             <h3>Filmography</h3>
             {details.cast && (
-              <ul>
+              <ol start={1}>
                 {details.cast.map(character => (
-                  <li className={classes.noListType} key={character.id}>
+                  <li key={character.id}>
                     {character.title}
                   </li>
                 ))}
