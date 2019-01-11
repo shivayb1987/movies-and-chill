@@ -10,17 +10,15 @@ export const setCurrentPage = createAction("UPDATE_CURRENT_PATH")
 export const getMovieDetails = createAction("GET_MOVIE_DETAILS")
 export const setMovieDetails = createAction("UPDATE_MOVIE_DETAILS")
 export const getMovieCredits = createAction("GET_MOVIE_CREDITS")
-export const setMovieCredits = createAction("UPDATE_MOVIE_CREDITS")
 
-const selectMovies = state => state.movies
-const saga = {
+export const selectMovies = state => state.movies
+export const saga = {
   [getTrendingMovies]: function*({ payload = 1 }) {
     const path = `/trending/movies/day?page=${payload}`
     const state = yield select(selectMovies)
     // retrieve from cache if exists
     yield put(setCurrentPage(payload))
     if (state[path]) {
-      console.log("Cache hit!")
       yield put(setTrendingMovies({ data: state[path], path }))
       return
     }
@@ -35,13 +33,13 @@ const saga = {
     const path = `/search/movie?query=${query}`
     const state = yield select(selectMovies)
     if (payload === "") {
-      const { currentPage } = yield select(selectMovies)
+      const { currentPage } = state
       yield put(getTrendingMovies(currentPage))
       return
     }
     // retrieve from cache if exists
     if (state[path]) {
-      console.log("Cache hit!")
+      // console.log("Cache hit!")
       yield put(setTrendingMovies({ data: state[path], path }))
       return
     }
@@ -55,9 +53,8 @@ const saga = {
     const path = `/movie/${payload}?page=1`
     const state = yield select(selectMovies)
     // retrieve from cache if exists
-    yield put(setCurrentPage(payload))
     if (state[path]) {
-      console.log("Cache hit!")
+      // console.log("Cache hit!")
       yield put(setMovieDetails({ data: state[path], path }))
       return
     }
@@ -73,10 +70,9 @@ const saga = {
     const path = `/movie/${id}/credits?page=1`
     const state = yield select(selectMovies)
     // retrieve from cache if exists
-    yield put(setCurrentPage(payload))
     if (state[path]) {
       console.log("Cache hit!")
-      yield put(setMovieCredits({ data: state[path], path }))
+      // yield put(setMovieCredits({ data: state[path], path }))
       return
     }
     const response = yield call(invokeService, path)
@@ -91,7 +87,7 @@ const saga = {
 
 export const moviesSagaWatcher = createSagaWatcher(saga)
 
-const reducer = {
+export const reducer = {
   [setTrendingMovies]: (state, { data, path }) => ({
     ...state,
     [path]: data,
@@ -100,11 +96,6 @@ const reducer = {
   [setCurrentPage]: (state, payload) => ({
     ...state,
     currentPage: payload
-  }),
-  [setMovieDetails]: (state, { data, path }) => ({
-    ...state,
-    [path]: data,
-    movieDetails: data
   }),
   [setMovieDetails]: (state, { data, path }) => ({
     ...state,

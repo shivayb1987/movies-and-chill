@@ -20,19 +20,23 @@ const style = {
     cursor: "pointer"
   }
 }
+
+const MovieCard = ({ movie, classes }) => (
+  <div className={classes.item}>
+    <label>{movie.title || movie.name}</label>
+    <img
+      src={`http://image.tmdb.org/t/p/w185/${movie.poster_path}`}
+      alt="movie_poster"
+    />
+  </div>
+)
 class Pure extends React.Component {
   render() {
     const { movie, classes } = this.props
     return (
       <li className={classes.list}>
         <Link to={`/movies/${movie.id}`}>
-          <div className={classes.item}>
-            <label>{movie.title || movie.name}</label>
-            <img
-              src={`http://image.tmdb.org/t/p/w185/${movie.poster_path}`}
-              alt="movie_poster"
-            />
-          </div>
+          <MovieCard movie={movie} classes={classes} />
         </Link>
       </li>
     )

@@ -25,6 +25,33 @@ const style = {
     textAlign: "center"
   }
 }
+const Character = ({ character }) => (
+  <div>
+    <label>
+      <small>{character.name}</small>
+    </label>
+    <div>As</div>
+    <small>{character.character}</small>
+  </div>
+)
+
+const ProfilePhoto = ({ character, classes }) => (
+  <img
+    className={classes.profile}
+    width={100}
+    height={100}
+    src={`http://image.tmdb.org/t/p/w185/${character.profile_path}`}
+    alt={character.name}
+  />
+)
+
+const Person = ({ character, classes }) => (
+  <li className={classnames(classes.character, classes.pointer)}>
+    <Character character={character} />
+    <ProfilePhoto character={character} classes={classes} />
+  </li>
+)
+
 class Pure extends React.Component {
   render() {
     const { cast, classes } = this.props
@@ -34,28 +61,11 @@ class Pure extends React.Component {
         <ul className={classes.cast}>
           {cast &&
             cast.map(character => (
-              <li
-                className={classnames(classes.character, classes.pointer)}
+              <Person
                 key={character.id}
-              >
-                <div>
-                  <label>
-                    <small>{character.name}</small>
-                  </label>
-                  <div>As</div>
-                  <small>{character.character}</small>
-                </div>
-
-                <img
-                  className={classes.profile}
-                  width={100}
-                  height={100}
-                  src={`http://image.tmdb.org/t/p/w185/${
-                    character.profile_path
-                  }`}
-                  alt={character.name}
-                />
-              </li>
+                character={character}
+                classes={classes}
+              />
             ))}
         </ul>
       </>
@@ -64,9 +74,12 @@ class Pure extends React.Component {
 }
 
 Pure.propTypes = {
-  cast: PropTypes.array.isRequired
+  cast: PropTypes.array.isRequired,
+  classes: PropTypes.object.isRequired
 }
 
-Pure.defaultProps = {}
+Pure.defaultProps = {
+  cast: []
+}
 
 export default withStyles(style)(Pure)
