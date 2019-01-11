@@ -19,7 +19,7 @@ const NoMatch = ({ location }) => (
 
 const Container = ({ location }) => (
   <TransitionGroup>
-    <CSSTransition key={location.key} timeout={500} classNames="fade">
+    <CSSTransition key={location.key} timeout={300} classNames="fade">
       <Switch>
         <Route exact path="/" component={App} />
         <Route exact path="/movies" component={App} />

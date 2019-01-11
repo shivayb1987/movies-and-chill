@@ -6,7 +6,8 @@ import MoviePage from "./MoviePage"
 const style = {
   container: {
     display: "flex",
-    flexWrap: "wrap"
+    flexWrap: "wrap",
+    justifyContent: "center"
   }
 }
 class Pure extends React.Component {

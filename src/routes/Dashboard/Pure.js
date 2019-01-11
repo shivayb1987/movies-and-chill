@@ -4,7 +4,7 @@ import MoviesPage from "../../components/MoviesPage"
 import { withStyles } from "@material-ui/core/styles"
 import Loader from "../../components/Loader"
 import ErrorBoundary from "../../components/ErrorBoundary"
-
+import classnames from "classnames"
 const pointer = {
   cursor: "pointer"
 }
@@ -23,6 +23,7 @@ const style = {
   center: {
     textAlign: "center"
   },
+  marginBottom: {},
   pointer: {
     ...pointer
   },
@@ -34,7 +35,6 @@ const style = {
     display: "flex",
     alignItems: "center",
     height: "40px",
-    width: "100%",
     borderRadius: "5px",
     border: "1px solid #e5e5e5",
     background: "white",
@@ -99,7 +99,9 @@ class Pure extends React.Component {
       <ErrorBoundary>
         <div className={classes.searchBox}>
           <aside className={classes.searchBorder}>
-            &#128269;
+            <span role="img" aria-label="search icon">
+              &#128269;
+            </span>
             <input
               value={this.state.title}
               onChange={this.handleSearch}
@@ -108,7 +110,7 @@ class Pure extends React.Component {
               id="site-search"
               name="q"
               aria-label="Search through site content"
-              placeholder="Find your favorite title!"
+              placeholder="Search Movies"
             />
             {this.state.title !== "" && (
               <button
@@ -123,7 +125,7 @@ class Pure extends React.Component {
         {movies && movies.length ? (
           <>
             <MoviesPage movies={movies} />
-            <div className={classes.center}>
+            <div className={classnames(classes.center, classes.marginBottom)}>
               <div>
                 Page {page} of {total_pages}
               </div>

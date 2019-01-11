@@ -1,4 +1,4 @@
-import { put, call, select } from "redux-saga/effects"
+import { put, call } from "redux-saga/effects"
 import { createAction, createReducer } from "redux-act"
 import createSagaWatcher from "../utilities/createSagaWatcher"
 import { isSuccess } from "../utilities/Utils"
@@ -25,7 +25,7 @@ export const saga = {
     const { status, data = {} } = response
     if (isSuccess(status)) {
       yield put(getCareerHistory(data))
-      yield put(setPersonDetails({ id: payload.id, data: data }))
+      yield put(setPersonDetails({ id: payload, data: data }))
     }
   }
 }

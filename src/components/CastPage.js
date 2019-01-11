@@ -2,7 +2,6 @@ import React from "react"
 import { Link } from "react-router-dom"
 import PropTypes from "prop-types"
 import { withStyles } from "@material-ui/core/styles"
-import classnames from "classnames"
 import { IMAGE_URL } from "../utilities/Config"
 import ErrorBoundary from "./ErrorBoundary"
 
@@ -11,8 +10,12 @@ const style = {
     clear: "left"
   },
   cast: {
+    padding: 0,
     display: "flex",
-    flexWrap: "wrap"
+    listStyleType: "none",
+    overflow: "auto",
+    width: "100vw",
+    border: "1px ridge"
   },
   pointer: {
     cursor: "pointer"
@@ -21,7 +24,12 @@ const style = {
     flex: 1,
     display: "flex",
     flexDirection: "column-reverse",
-    justifyContent: "flex-end"
+    justifyContent: "flex-end",
+    textAlign: "center",
+    alignItems: "center",
+    "&:hover": {
+      transform: "scale(1.1)"
+    }
   },
   profile: {
     overflow: "hidden",
@@ -50,10 +58,10 @@ const ProfilePhoto = ({ character, classes }) => (
 )
 
 const Person = ({ character, classes }) => (
-  <li className={classnames(classes.character, classes.pointer)}>
+  <div className={classes.character}>
     <Character character={character} />
     <ProfilePhoto character={character} classes={classes} />
-  </li>
+  </div>
 )
 
 class Pure extends React.Component {
@@ -65,13 +73,15 @@ class Pure extends React.Component {
         <ul className={classes.cast}>
           {cast &&
             cast.map(character => (
-              <Link key={character.id} to={`/person/${character.id}`}>
-                <Person
-                  key={character.id}
-                  character={character}
-                  classes={classes}
-                />
-              </Link>
+              <li style={{ margin: "1em" }} key={character.id}>
+                <Link to={`/person/${character.id}`}>
+                  <Person
+                    key={character.id}
+                    character={character}
+                    classes={classes}
+                  />
+                </Link>
+              </li>
             ))}
         </ul>
       </ErrorBoundary>

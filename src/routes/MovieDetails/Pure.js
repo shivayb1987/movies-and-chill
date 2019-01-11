@@ -2,7 +2,6 @@ import React from "react"
 import PropTypes from "prop-types"
 import { withStyles } from "@material-ui/core/styles"
 import CastPage from "../../components/CastPage"
-import { IMAGE_URL } from "../../utilities/Config"
 import Details from "./Details"
 import ProfilePicture from "../../components/ProfilePicture"
 const style = {

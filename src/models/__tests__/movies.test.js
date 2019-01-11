@@ -8,6 +8,8 @@ import reducer, {
   getMovieDetails,
   setMovieDetails,
   getMovieCredits,
+  cacheTrendingMovies,
+  setCacheDetails,
   selectMovies
 } from "../movies"
 import { invokeService } from "../../service"
@@ -45,6 +47,11 @@ describe("Testing getTrending Saga", () => {
     assert(actual => {
       expect(actual).toEqual(call(invokeService, path))
     })
+
+    // cache the next page
+    assert(actual => {
+      expect(actual).toEqual(put(cacheTrendingMovies(payload + 1)))
+    }, dummyResponse)
 
     // update the state
     assert(actual => {
@@ -314,6 +321,66 @@ describe("Testing getMovieCredits Saga", () => {
     assert(actual => {
       expect(actual).toEqual(void 0)
     }, dummyResponse)
+  })
+  test("getMovieCredits:: cache hit", () => {
+    const payload = {
+      id: "676768"
+    }
+    const path = `/movie/${payload.id}/credits?page=1`
+    const dummyState = {
+      [path]: {
+        cast: [],
+        data: {
+          page: 1,
+          results: [],
+          total_pages: 10
+        }
+      }
+    }
+    const gen = saga[getMovieCredits]({ payload })
+    const assert = assertEqual(gen)
+    // select current state
+    assert(actual => {
+      expect(actual).toEqual(select(selectMovies))
+    })
+
+    // it should return
+    assert(actual => {
+      expect(actual).toEqual(void 0)
+    }, dummyState)
+  })
+})
+describe("Testing cacheTrendingMovies Saga", () => {
+  test("cacheTrendingMovies:: calls service", () => {
+    const dummyResponse = {
+      status: 200,
+      data: {
+        page: 2,
+        results: [],
+        total_pages: 100
+      }
+    }
+    const payload = 2
+    const path = `/trending/movies/day?page=2`
+    const gen = saga[cacheTrendingMovies]({ payload })
+    const assert = assertEqual(gen)
+
+    // call the service
+    assert(actual => {
+      expect(actual).toEqual(call(invokeService, path))
+    })
+
+    // update the state
+    assert(actual => {
+      expect(actual).toEqual(
+        put(setCacheDetails({ data: dummyResponse.data, path }))
+      )
+    }, dummyResponse)
+
+    // it should return
+    assert(actual => {
+      expect(actual).toEqual(void 0)
+    })
   })
   test("getMovieCredits:: cache hit", () => {
     const payload = {

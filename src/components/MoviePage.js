@@ -18,13 +18,22 @@ const style = {
   },
   pointer: {
     cursor: "pointer"
+  },
+  caption: {
+    wordWrap: "break-word",
+    width: "150px"
   }
 }
 
 const MovieCard = ({ movie, classes }) => (
   <div className={classes.item}>
-    <label>{movie.title || movie.name}</label>
-    <img src={`${IMAGE_URL}/w185/${movie.poster_path}`} alt="movie_poster" />
+    <label className={classes.caption}>{movie.title || movie.name}</label>
+    <img
+      height={250}
+      width={200}
+      src={`${IMAGE_URL}/w185/${movie.poster_path}`}
+      alt="movie_poster"
+    />
   </div>
 )
 class Pure extends React.Component {

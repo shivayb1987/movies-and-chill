@@ -95,4 +95,8 @@ class Pure extends React.Component {
   }
 }
 
+Pure.propTypes = {
+  classes: PropTypes.object.isRequired
+}
+
 export default withStyles(styles)(Pure)

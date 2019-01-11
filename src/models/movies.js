@@ -10,6 +10,8 @@ export const setCurrentPage = createAction("UPDATE_CURRENT_PATH")
 export const getMovieDetails = createAction("GET_MOVIE_DETAILS")
 export const setMovieDetails = createAction("UPDATE_MOVIE_DETAILS")
 export const getMovieCredits = createAction("GET_MOVIE_CREDITS")
+export const cacheTrendingMovies = createAction("CACHE_TRENDING_MOVIES")
+export const setCacheDetails = createAction("SET_CACHE_TRENDING_MOVIES")
 
 export const selectMovies = state => state.movies
 export const saga = {
@@ -20,12 +22,22 @@ export const saga = {
     yield put(setCurrentPage(payload))
     if (state[path]) {
       yield put(setTrendingMovies({ data: state[path], path }))
+      yield put(cacheTrendingMovies(payload + 1))
       return
     }
     const response = yield call(invokeService, path)
     if (isSuccess(response.status)) {
+      yield put(cacheTrendingMovies(payload + 1))
       const { data } = response
       yield put(setTrendingMovies({ data, path }))
+    }
+  },
+  [cacheTrendingMovies]: function*({ payload }) {
+    const path = `/trending/movies/day?page=${payload}`
+    const response = yield call(invokeService, path)
+    if (isSuccess(response.status)) {
+      const { data } = response
+      yield put(setCacheDetails({ data, path }))
     }
   },
   [searchMovie]: function*({ payload = "" }) {
@@ -101,6 +113,10 @@ export const reducer = {
     ...state,
     [path]: data,
     movieDetails: data
+  }),
+  [setCacheDetails]: (state, { data, path }) => ({
+    ...state,
+    [path]: data
   })
 }
 

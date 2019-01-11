@@ -19,7 +19,7 @@ const ProfilePicture = ({
       height={height}
       width={width}
       src={`${IMAGE_URL}/w500/${profilePath}`}
-      alt={`Profile picture of ${title}`}
+      alt={title}
     />
   </>
 )

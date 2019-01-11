@@ -4,7 +4,7 @@ import { getPersonDetails } from "../../models/cast"
 import Pure from "./Pure"
 
 const s = (state, props) => ({
-  details: state.cast[props.match.params.personId] || []
+  details: state.cast[props.match.params.personId] || {}
 })
 
 const d = dispatch => ({

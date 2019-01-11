@@ -1,6 +1,5 @@
 import React from "react"
 import PropTypes from "prop-types"
-import Credits from "./Data"
 
 class Pure extends React.Component {
   componentDidMount() {
@@ -11,6 +10,12 @@ class Pure extends React.Component {
   render() {
     return this.props.children(this.props.details)
   }
+}
+
+Pure.propTypes = {
+  getDetails: PropTypes.func.isRequired,
+  match: PropTypes.object.isRequired,
+  details: PropTypes.object.isRequired
 }
 
 export default Pure
