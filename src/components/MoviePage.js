@@ -2,7 +2,7 @@ import React from "react"
 import { Link } from "react-router-dom"
 import PropTypes from "prop-types"
 import { withStyles } from "@material-ui/core/styles"
-
+import { IMAGE_URL } from "../utilities/Config"
 const style = {
   list: {
     "list-style-type": "none"
@@ -24,10 +24,7 @@ const style = {
 const MovieCard = ({ movie, classes }) => (
   <div className={classes.item}>
     <label>{movie.title || movie.name}</label>
-    <img
-      src={`http://image.tmdb.org/t/p/w185/${movie.poster_path}`}
-      alt="movie_poster"
-    />
+    <img src={`${IMAGE_URL}/w185/${movie.poster_path}`} alt="movie_poster" />
   </div>
 )
 class Pure extends React.Component {

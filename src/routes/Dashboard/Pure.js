@@ -2,6 +2,8 @@ import React from "react"
 import PropTypes from "prop-types"
 import MoviesPage from "../../components/MoviesPage"
 import { withStyles } from "@material-ui/core/styles"
+import Loader from "../../components/Loader"
+import ErrorBoundary from "../../components/ErrorBoundary"
 
 const pointer = {
   cursor: "pointer"
@@ -94,7 +96,7 @@ class Pure extends React.Component {
     const getPrevPage = () => getMovies(page - 1)
     const getNextPage = () => getMovies(page + 1)
     return (
-      <div>
+      <ErrorBoundary>
         <div className={classes.searchBox}>
           <aside className={classes.searchBorder}>
             &#128269;
@@ -118,27 +120,33 @@ class Pure extends React.Component {
             )}
           </aside>
         </div>
-        <MoviesPage movies={movies} />
-        <div className={classes.center}>
-          <div>
-            Page {page} of {total_pages}
-          </div>
-          <button
-            className={classes.pointer}
-            disabled={page === 1}
-            onClick={getPrevPage}
-          >
-            &#8592;
-          </button>
-          <button
-            className={classes.pointer}
-            disabled={page === total_pages}
-            onClick={getNextPage}
-          >
-            &#8594;
-          </button>
-        </div>
-      </div>
+        {movies && movies.length ? (
+          <>
+            <MoviesPage movies={movies} />
+            <div className={classes.center}>
+              <div>
+                Page {page} of {total_pages}
+              </div>
+              <button
+                className={classes.pointer}
+                disabled={page === 1}
+                onClick={getPrevPage}
+              >
+                &#8592;
+              </button>
+              <button
+                className={classes.pointer}
+                disabled={page === total_pages}
+                onClick={getNextPage}
+              >
+                &#8594;
+              </button>
+            </div>
+          </>
+        ) : (
+          <Loader />
+        )}
+      </ErrorBoundary>
     )
   }
 }

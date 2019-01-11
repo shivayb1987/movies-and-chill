@@ -1,7 +1,11 @@
 import React from "react"
+import { Link } from "react-router-dom"
 import PropTypes from "prop-types"
 import { withStyles } from "@material-ui/core/styles"
 import classnames from "classnames"
+import { IMAGE_URL } from "../utilities/Config"
+import ErrorBoundary from "./ErrorBoundary"
+
 const style = {
   clearFloat: {
     clear: "left"
@@ -40,7 +44,7 @@ const ProfilePhoto = ({ character, classes }) => (
     className={classes.profile}
     width={100}
     height={100}
-    src={`http://image.tmdb.org/t/p/w185/${character.profile_path}`}
+    src={`${IMAGE_URL}/w185/${character.profile_path}`}
     alt={character.name}
   />
 )
@@ -56,19 +60,21 @@ class Pure extends React.Component {
   render() {
     const { cast, classes } = this.props
     return (
-      <>
+      <ErrorBoundary>
         <h2 className={classes.clearFloat}>Cast</h2>
         <ul className={classes.cast}>
           {cast &&
             cast.map(character => (
-              <Person
-                key={character.id}
-                character={character}
-                classes={classes}
-              />
+              <Link key={character.id} to={`/person/${character.id}`}>
+                <Person
+                  key={character.id}
+                  character={character}
+                  classes={classes}
+                />
+              </Link>
             ))}
         </ul>
-      </>
+      </ErrorBoundary>
     )
   }
 }

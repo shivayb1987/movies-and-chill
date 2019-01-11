@@ -2,7 +2,9 @@ import React from "react"
 import PropTypes from "prop-types"
 import { withStyles } from "@material-ui/core/styles"
 import CastPage from "../../components/CastPage"
-
+import { IMAGE_URL } from "../../utilities/Config"
+import Details from "./Details"
+import ProfilePicture from "../../components/ProfilePicture"
 const style = {
   item: {
     display: "flex",
@@ -27,52 +29,61 @@ const style = {
 
 const getLanguage = (languages, key) =>
   languages.some(language => language.iso_639_1 === key)
-class Pure extends React.Component {
-  componentDidMount() {
-    const { movieId } = this.props.match.params
-    this.props.getDetails(movieId)
-  }
 
+const MoviePoster = ({ movieDetails, classes }) => (
+  <ProfilePicture
+    title={movieDetails.title || movieDetails.name}
+    height={400}
+    width={500}
+    profilePath={movieDetails.poster_path}
+    tagline={movieDetails.tagline}
+    className={classes.floatLeft}
+  />
+)
+const Plot = ({ text }) => (
+  <>
+    <h3>Plot</h3>
+    <p>
+      <i>{text}</i>
+    </p>
+  </>
+)
+
+const MovieInfo = ({ movieDetails }) => (
+  <ul style={{ listStyleType: "none" }}>
+    <li>
+      <b>Original Language:</b>{" "}
+      {getLanguage(
+        (movieDetails.spoken_languages = []),
+        movieDetails.original_language
+      ).name || movieDetails.original_language}
+    </li>
+    <li>
+      <b>Release Date:</b> {movieDetails.release_date}
+    </li>
+    <li>
+      <b>Length:</b> {movieDetails.runtime} minutes
+    </li>
+    <li>
+      <b>Rating:</b> {movieDetails.vote_average}
+    </li>
+    <li />
+  </ul>
+)
+class Pure extends React.Component {
   render() {
-    const { movieDetails, classes } = this.props
+    const { classes, ...restProps } = this.props
     return (
-      <div className={classes.center}>
-        <div>
-          <h1>{movieDetails.title || movieDetails.name}</h1>
-          <em>{movieDetails.tagline}</em>
-        </div>
-        <img
-          className={classes.floatLeft}
-          height={400}
-          width={500}
-          src={`http://image.tmdb.org/t/p/w500/${movieDetails.poster_path}`}
-          alt="movie_poster"
-        />
-        <h3>Plot</h3>
-        <p>
-          <i>{movieDetails.overview}</i>
-        </p>
-        <ul>
-          <li>
-            <b>Original Language:</b>{" "}
-            {getLanguage(
-              (movieDetails.spoken_languages = []),
-              movieDetails.original_language
-            ).name || movieDetails.original_language}
-          </li>
-          <li>
-            <b>Release Date:</b> {movieDetails.release_date}
-          </li>
-          <li>
-            <b>Length:</b> {movieDetails.runtime} minutes
-          </li>
-          <li>
-            <b>Rating:</b> {movieDetails.vote_average}
-          </li>
-          <li />
-        </ul>
-        {movieDetails.cast && <CastPage cast={movieDetails.cast} />}
-      </div>
+      <Details {...restProps}>
+        {movieDetails => (
+          <div className={classes.center}>
+            <MoviePoster movieDetails={movieDetails} classes={classes} />
+            <Plot text={movieDetails.overview} />
+            <MovieInfo movieDetails={movieDetails} />
+            {movieDetails.cast && <CastPage cast={movieDetails.cast} />}
+          </div>
+        )}
+      </Details>
     )
   }
 }

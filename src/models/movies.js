@@ -55,7 +55,7 @@ export const saga = {
     // retrieve from cache if exists
     if (state[path]) {
       // console.log("Cache hit!")
-      yield put(setMovieDetails({ data: state[path], path }))
+      // yield put(setMovieDetails({ data: state[path], path }))
       return
     }
     const response = yield call(invokeService, path)

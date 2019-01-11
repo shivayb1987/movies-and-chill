@@ -262,17 +262,10 @@ describe("Testing getMovieDetails Saga", () => {
       expect(actual).toEqual(select(selectMovies))
     })
 
-    // update the state
-    assert(actual => {
-      expect(actual).toEqual(
-        put(setMovieDetails({ data: dummyResponse.data, path }))
-      )
-    }, dummyState)
-
     // it should return
     assert(actual => {
       expect(actual).toEqual(void 0)
-    }, dummyResponse)
+    }, dummyState)
   })
 })
 describe("Testing getMovieCredits Saga", () => {
