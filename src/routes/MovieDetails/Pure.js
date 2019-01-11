@@ -33,7 +33,7 @@ const MoviePoster = ({ movieDetails, classes }) => (
   <ProfilePicture
     title={movieDetails.title || movieDetails.name}
     height={400}
-    width={500}
+    width={400}
     profilePath={movieDetails.poster_path}
     tagline={movieDetails.tagline}
     className={classes.floatLeft}
