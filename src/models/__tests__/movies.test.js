@@ -98,6 +98,11 @@ describe("Testing getTrending Saga", () => {
       )
     })
 
+    // call the service
+    assert(actual => {
+      expect(actual).toEqual(put(cacheTrendingMovies(payload + 1)))
+    })
+
     // it should return
     assert(actual => {
       expect(actual).toEqual(void 0)
