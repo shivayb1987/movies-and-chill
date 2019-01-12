@@ -80,19 +80,14 @@ export const saga = {
   [getMovieCredits]: function*({ payload }) {
     const { id } = payload
     const path = `/movie/${id}/credits?page=1`
+    const savePath = `/movie/${id}?page=1`
     const state = yield select(selectMovies)
-    // retrieve from cache if exists
-    if (state[path]) {
-      console.log("Cache hit!")
-      // yield put(setMovieCredits({ data: state[path], path }))
-      return
-    }
     const response = yield call(invokeService, path)
     if (isSuccess(response.status)) {
       const { data } = response
       const { cast } = data
 
-      yield put(setMovieDetails({ data: { ...payload, cast }, path }))
+      yield put(setMovieDetails({ data: { ...payload, cast }, path: savePath }))
     }
   }
 }

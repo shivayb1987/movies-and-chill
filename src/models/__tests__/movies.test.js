@@ -324,7 +324,7 @@ describe("Testing getMovieCredits Saga", () => {
         put(
           setMovieDetails({
             data: { ...payload, cast: dummyResponse.data.cast },
-            path
+            path: `/movie/${payload.id}?page=1`
           })
         )
       )
@@ -334,33 +334,6 @@ describe("Testing getMovieCredits Saga", () => {
     assert(actual => {
       expect(actual).toEqual(void 0)
     }, dummyResponse)
-  })
-  test("getMovieCredits:: cache hit", () => {
-    const payload = {
-      id: "676768"
-    }
-    const path = `/movie/${payload.id}/credits?page=1`
-    const dummyState = {
-      [path]: {
-        cast: [],
-        data: {
-          page: 1,
-          results: [],
-          total_pages: 10
-        }
-      }
-    }
-    const gen = saga[getMovieCredits]({ payload })
-    const assert = assertEqual(gen)
-    // select current state
-    assert(actual => {
-      expect(actual).toEqual(select(selectMovies))
-    })
-
-    // it should return
-    assert(actual => {
-      expect(actual).toEqual(void 0)
-    }, dummyState)
   })
 })
 describe("Testing cacheTrendingMovies Saga", () => {
@@ -394,33 +367,6 @@ describe("Testing cacheTrendingMovies Saga", () => {
     assert(actual => {
       expect(actual).toEqual(void 0)
     })
-  })
-  test("getMovieCredits:: cache hit", () => {
-    const payload = {
-      id: "676768"
-    }
-    const path = `/movie/${payload.id}/credits?page=1`
-    const dummyState = {
-      [path]: {
-        cast: [],
-        data: {
-          page: 1,
-          results: [],
-          total_pages: 10
-        }
-      }
-    }
-    const gen = saga[getMovieCredits]({ payload })
-    const assert = assertEqual(gen)
-    // select current state
-    assert(actual => {
-      expect(actual).toEqual(select(selectMovies))
-    })
-
-    // it should return
-    assert(actual => {
-      expect(actual).toEqual(void 0)
-    }, dummyState)
   })
 })
 
