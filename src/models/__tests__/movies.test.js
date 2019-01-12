@@ -269,10 +269,18 @@ describe("Testing getMovieDetails Saga", () => {
     }
     const gen = saga[getMovieDetails]({ payload })
     const assert = assertEqual(gen)
+
     // select current state
     assert(actual => {
       expect(actual).toEqual(select(selectMovies))
     })
+
+    // update current details
+    assert(actual => {
+      expect(actual).toEqual(
+        put(setMovieDetails({ data: dummyState[path], path }))
+      )
+    }, dummyState)
 
     // it should return
     assert(actual => {
